@@ -9,7 +9,83 @@ Sockets Links.
  server .
 4. Send and receive the message using the send function in socket.
 ## PROGRAM
+server.py
+~~~
+import socket
+
+# Create socket object
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Bind the socket with host and port
+host = '127.0.0.1'
+port = 5000
+server_socket.bind((host, port))
+
+# Listen for incoming connections
+server_socket.listen(1)
+
+print("Echo Server is waiting for connection...")
+
+# Accept client connection
+client_socket, addr = server_socket.accept()
+print("Connected to:", addr)
+
+while True:
+    # Receive message from client
+    data = client_socket.recv(1024).decode()
+
+    if not data:
+        break
+
+    print("Client:", data)
+
+    # Send same message back to client
+    client_socket.send(data.encode())
+
+# Close sockets
+client_socket.close()
+server_socket.close()
+~~~
+
+cilent.py
+~~~
+import socket
+
+# Create socket object
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Connect to server
+host = '127.0.0.1'
+port = 5000
+
+client_socket.connect((host, port))
+
+while True:
+    # Input message
+    message = input("Enter message: ")
+
+    # Send message to server
+    client_socket.send(message.encode())
+
+    if message.lower() == 'exit':
+        break
+
+    # Receive echoed message
+    data = client_socket.recv(1024).decode()
+
+    print("Server echoed:", data)
+
+# Close socket
+client_socket.close()
+~~~
 ## OUPUT
+server.py
+
+<img width="1306" height="200" alt="image" src="https://github.com/user-attachments/assets/634fffa1-6022-4438-801d-a89cfc74f91e" />
+
+client.py
+
+<img width="1437" height="205" alt="image" src="https://github.com/user-attachments/assets/bb3941b3-dbd2-4f46-ad53-f82cd56c7018" />
+
 ## RESULT
-Thus, the python program for creating Echo Client and Echo Server using TCP Sockets Links 
-was successfully created and executed.
+Thus, the python program for creating Echo Client and Echo Server using TCP Sockets Links was successfully created and executed.
